@@ -3,16 +3,18 @@ module seqsm
 // TODO: define your outputs and inputs
     input logic clk,
     input logic rst
+      
+    
     );
 
 
    // TODO: define your states
    // TODO: here is one suggestion, but you can implmenet any number of states
    // TODO: you like
-   // TODO: typedef enum {
-   // TODO:		 Idle, LoadPreamble, LoadTaps, LoadSeed, InitLFSR, 
-   // TODO:		 ProcessPreamble, Encrypt, Done
-   // TODO:		 } states_t;
+    typedef enum {
+               	 Idle, LoadPreamble, LoadTaps, LoadSeed, InitLFSR, 
+            		 ProcessPreamble, Encrypt, Done
+            	    } states_t;
    // TODO: for example
    // TODO:  1: Idle -> 
    // TODO:  2: LoadPreamble (read the preamble from the ROM and capture it in some registers) ->
@@ -26,11 +28,28 @@ module seqsm
    // TODO: implement your state machine
    // TODO:
    // TODO: sequential part
-   // TODO: always_ff @(posedge clk) begin 
-   // TODO:     . . .
-   // TODO: end
+   
+   state_t curState;
+   state_t nxtState;
+   
+    always_ff @(posedge clk) 
+    begin 
+      if (rst)
+         curState <= Idle;
+      else
+         curState <= nxtState;
+    end
    // TODO:
-   // TODO: always_comb begin
-   // TODO:     . . .
-   // TODO: end
+   always_comb begin
+      unique case (curState)
+         Idle : begin
+            if(loadPreamble)
+               nxtState = LoadPreamble;
+            else
+               nxtState = Idle;
+         end
+         
+      endcase
+    end
+   
 endmodule // seqsm
