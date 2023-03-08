@@ -4,6 +4,23 @@ module seqsm
     input logic clk,
     input logic rst
       
+    input logic encRqst; //encrypt request
+    input logic preDone; //preamble encrypted
+    input logic nByteValid; //incoming b yte valid
+    input logic pacDone; //message encrypted, packet done
+      
+    output logic enPre; //enable signal to data path to get preammble length 
+    output logic enTap; //enable signal load tap val
+    output logic enSeed; //enable signal to load seed
+    output logic getNext;
+    output logic loadlfsr;
+    output logic incReadAddr;
+    output logic incByteCnt;
+    
+    output logic vilidOut;
+    output logic done;
+    
+      
     
     );
 
@@ -41,12 +58,51 @@ module seqsm
     end
    // TODO:
    always_comb begin
+      
+    enPre = 0; //enable signal to data path to get preammble length 
+    enTap = 0; //enable signal load tap val
+    enSeed = 0; //enable signal to load seed
+    getNext = 0;
+    loadlfsr = 0;
+    incReadAddr = 0;
+    incByteCnt = 0;
+    
+    vilidOut = 0;
+    done = 0;
+      
       unique case (curState)
          Idle : begin
-            if(loadPreamble)
+            if(encRqst)
                nxtState = LoadPreamble;
             else
                nxtState = Idle;
+         end
+         
+         LoadPreamble : begin
+            enPre = 1;
+            incReadAddr = 1;
+            nxtState = LoadTaps;
+         end
+         
+         LoadTaps : begin
+            enTap = 1;
+            incReadAddr = 1;
+            nxtState = LoadSeed;
+         end
+         
+         LoadSeed : begin
+            enSeed = 1;
+            incReadAddr = 1;
+            nxtState = InitLFSR;
+         end
+               
+         InitLFSR : begin
+            loadlfsr = 1;
+            nxtState = ProcessPreamble;
+         end
+               
+         ProcessPreamble : begin
+         
          end
          
       endcase
