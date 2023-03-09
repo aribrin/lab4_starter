@@ -2,26 +2,23 @@ module seqsm
    (
 // TODO: define your outputs and inputs
     input logic clk,
-    input logic rst
+    input logic rst,
       
-    input logic encRqst; //encrypt request
-    input logic preDone; //preamble encrypted
-    input logic validIn; //incoming byte valid
-    input logic pacDone; //message encrypted, packet done
+    input logic encRqst, //encrypt request
+    input logic preDone, //preamble encrypted
+    input logic validIn, //incoming byte valid
+    input logic pacDone, //message encrypted, packet done
       
-    output logic enPre; //enable signal to data path to get preammble length 
-    output logic enTap; //enable signal load tap val
-    output logic enSeed; //enable signal to load seed
-    output logic getNext; //get next lfsr value
-    output logic loadlfsr; //initialize lfsr
-    output logic incReadAddr;
-    output logic incByteCnt;
+    output logic enPre, //enable signal to data path to get preammble length 
+    output logic enTap, //enable signal load tap val
+    output logic enSeed, //enable signal to load seed
+    output logic getNext, //get next lfsr value
+    output logic loadlfsr, //initialize lfsr
+    output logic incReadAddr,
+    output logic incByteCnt,
     
-    output logic vilidOut;
-    output logic done;
-    
-      
-    
+    output logic vilidOut,
+    output logic done
     );
 
 
