@@ -1,10 +1,11 @@
 module lab4_dp #(parameter DW=8, AW=4, lfsr_bitwidth=5) (
 // TODO: Declare your ports for your datapath
 // TODO: for example							 
-// TODO: output logic [7:0] encryptByte, // encrypted byte output
+ output logic [7:0] encryptByte, // encrypted byte output
 // TODO: ... 
-// TODO: input logic 	      clk, // clock signal 
-// TODO: input logic 	      rst           // reset
+input logic	clk, // clock signal 
+input logic	rst,           // reset
+input logic	validIn
    );
    
    //
