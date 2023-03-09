@@ -6,14 +6,14 @@ module seqsm
       
     input logic encRqst; //encrypt request
     input logic preDone; //preamble encrypted
-    input logic nByteValid; //incoming b yte valid
+    input logic validIn; //incoming byte valid
     input logic pacDone; //message encrypted, packet done
       
     output logic enPre; //enable signal to data path to get preammble length 
     output logic enTap; //enable signal load tap val
     output logic enSeed; //enable signal to load seed
-    output logic getNext;
-    output logic loadlfsr;
+    output logic getNext; //get next lfsr value
+    output logic loadlfsr; //initialize lfsr
     output logic incReadAddr;
     output logic incByteCnt;
     
@@ -102,9 +102,28 @@ module seqsm
          end
                
          ProcessPreamble : begin
-         
+            if(!preDone) begin
+               incByteCnt = 1;
+               getNext = 1;
+               nxtState = ProcessPreamble;
+            end
+            else
+               nxtState = Encrypt;
          end
          
+         Encrypt : begin
+            if(!pacDone)begin
+               incByteCnt = 1;
+               getNext = 1;
+               nxtState = ProcessPreamble;
+            end
+            else
+               nxtState = Done;
+         end
+         
+         Done : begin
+            done = 1;
+         end
       endcase
     end
    
